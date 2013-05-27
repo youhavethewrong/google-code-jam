@@ -2,14 +2,26 @@
  * ESC 2013.05.26
  */
 
-def minimize(len, v1, v2) {
+def sumVectors(v1, v2) {
     def sum = 0
-    v1 = v1.sort()
-    v2 = v2.sort().reverse()
     for (def i=0; i < v1.size(); i++) {
         sum += v1[i] * v2[i]
     }
     return sum
+}
+
+def minimize(v1, v2) {
+    def sumMorePositive = 0
+    def sumMoreNegative = 0
+    v1 = v1.sort()
+    v2 = v2.sort().reverse()
+    sumMoreNegative = sumVectors(v1, v2)
+    v2 = v2.reverse()
+    sumMorePositive = sumVectors(v1, v2)
+
+    println "Difference:"+sumMoreNegative+" : "+sumMorePositive
+
+    return (sumMorePositive < sumMoreNegative) ? sumMorePositive : sumMoreNegative
 }
 
 def main() {
@@ -27,12 +39,12 @@ def main() {
         def v2 = lines[index+2].split(" ")
         v2 = v2.collect { Integer.valueOf(it) }
 
-        cases[(i)] = [len:lines[index], v1:v1, v2:v2]
+        cases[(i)] = [v1:v1, v2:v2]
     }
 
     for( def j in cases.keySet() ) {
         def caseRun = cases[j]
-        println "Case #$j: "+minimize(caseRun['len'], caseRun['v1'], caseRun['v2'])
+        println "Case #$j: "+minimize(caseRun['v1'], caseRun['v2'])
     }
 }
 
