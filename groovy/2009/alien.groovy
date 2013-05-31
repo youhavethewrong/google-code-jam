@@ -5,8 +5,6 @@
 import java.util.regex.Pattern
 
 def interpret(dict, pattern) {
-    println "Searching: "+dict
-    println "Pattern:   "+pattern
     return dict.findAll { it =~ pattern }.size()
 }
 
@@ -16,15 +14,11 @@ def main() {
     def scenario = lines[0].split(" ")
 
     def wordLength = Integer.valueOf(scenario[0])
-    println "length: " + wordLength
     def dictSize   = Integer.valueOf(scenario[1])
-    println "size: " + dictSize
     def patternCount  = Integer.valueOf(scenario[2])
-    println "count: " + patternCount
 
     def dict = []
     for( def h=1; h <= dictSize; h++ ) {
-        println "dict "+lines[h]
         dict[h-1] = lines[h]
     }
 
