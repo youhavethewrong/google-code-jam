@@ -40,7 +40,7 @@ def main() {
             links[(j-1)] = [linkA:Integer.valueOf(linkA), linkB:Integer.valueOf(linkB)]
         }
 
-        println "Case #"+(i+1)+":"+intersections(links)
+        println "Case #"+(i+1)+": "+intersections(links)
         index += linkCount+1
     }
 }
