@@ -4,14 +4,21 @@
 
 def intersections(links) {
     def intersectionCount = 0
-    // for each link l
-        // for each other link m
-            // if l.a < m.a or m.b < l.b
-                // count++
-            // else if l.b < m.a or m.b < l.a
-                // count++
-
-    // count = count / 2
+    for(def l=0; l < links.size(); l++) {
+        for(def m=0; m < links.size(); m++) {
+            if(links[l]['linkA'] != links[m]['linkA'] &&
+               links[l]['linkB'] != links[m]['linkB']) {
+                if(links[l]['linkA'] < links[m]['linkA'] &&
+                   links[m]['linkA'] < links[l]['linkB']) {
+                    intersectionCount++
+                }
+                else if(links[l]['linkA'] < links[m]['linkB'] &&
+                        links[m]['linkB'] < links[l]['linkB']) {
+                    intersectionCount++
+                }
+            }
+        }
+    }
 
     return intersectionCount
 }
