@@ -2,24 +2,43 @@
  *
  */
 
+def getSlope(x1, y1, x2, y2) {
+    return (y2 - y1)/(x2 - x1)
+}
+
+def getIntercept(x, y, slope) {
+    return y - slope*x
+}
+
 def intersections(links) {
     def intersectionCount = 0
-    for(def l=0; l < links.size(); l++) {
-        for(def m=0; m < links.size(); m++) {
-            if(links[l]['linkA'] != links[m]['linkA'] &&
-               links[l]['linkB'] != links[m]['linkB']) {
-                if(links[l]['linkA'] < links[m]['linkA'] &&
-                   links[m]['linkA'] < links[l]['linkB']) {
-                    intersectionCount++
-                }
-                else if(links[l]['linkA'] < links[m]['linkB'] &&
-                        links[m]['linkB'] < links[l]['linkB']) {
-                    intersectionCount++
+    def lines = [:]
+    for(def i=0; i < links.size(); i++) {
+        def x1 = 0
+        def y1 = links[i][0]
+        def x2 = 1
+        def y2 = links[i][1]
+        def slope = getSlope(x1, y1, x2, y2)
+        def intercept = getIntercept(x1, y1, slope)
+        lines[i] = [x1:x1, y1:y1, x2:x2, y2:y2, slope:slope, intercept:intercept]
+    }
+    //println lines
+
+    for(def i=0; i < lines.size(); i++) {
+        for(def j=0; j < lines.size(); j++) {
+            if( i != j ) {
+                def b = lines[j]["intercept"] - lines[i]["intercept"]
+                def m = lines[i]["slope"] - lines[j]["slope"]
+                if(m != 0 && b > 0) {
+                    def xCoord = b/m
+                    if(xCoord >= 0 && xCoord <= 1) {
+                        //println "Intersection at ("+xCoord+","+b+")"
+                        intersectionCount++
+                    }
                 }
             }
         }
     }
-
     return intersectionCount
 }
 
@@ -37,7 +56,7 @@ def main() {
             def endPoints = lines[index+j].split(" ")
             def linkA = endPoints[0]
             def linkB = endPoints[1]
-            links[(j-1)] = [linkA:Integer.valueOf(linkA), linkB:Integer.valueOf(linkB)]
+            links[(j-1)] = [0:Integer.valueOf(linkA), 1:Integer.valueOf(linkB)]
         }
 
         println "Case #"+(i+1)+": "+intersections(links)
